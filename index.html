@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Dinov Family</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--light-bg);
+        }
+
+        .hero {
+            background: var(--gradient);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" fill-opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .navbar {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--secondary-color);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .family-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .family-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .family-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .family-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .family-card p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .member-profile {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .member-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .member-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .member-info .title {
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .member-section {
+            margin-bottom: 2rem;
+        }
+
+        .member-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            background: var(--light-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .back-btn {
+            margin-bottom: 2rem;
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        .back-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+                gap: 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .member-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .member-profile {
+                padding: 2rem;
+            }
+
+            .family-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animate-on-scroll.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#home" class="logo">Dinov Family</a>
+            <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#darry" class="nav-link">Darry</a></li>
+                <li><a href="#anna-sophia" class="nav-link">Anna-Sophia</a></li>
+                <li><a href="#kosta" class="nav-link">Kosta</a></li>
+                <li><a href="#ivo" class="nav-link">Ivo</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>The Dinov Family</h1>
+            <p>Welcome to our family's digital home</p>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Home Page -->
+            <div id="home" class="page active">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 2rem; color: var(--primary-color);">Our Family</h2>
+                <p style="text-align: center; font-size: 1.25rem; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto; opacity: 0.8;">
+                    Discover the stories, achievements, and passions of each member of the Dinov family.
+                </p>
+                
+                <div class="family-grid">
+                    <div class="family-card animate-on-scroll" onclick="navigateToPage('darry')">
+                        <h3>Darry Dinov</h3>
+                        <p>Learn about Darry's journey, interests, and accomplishments.</p>
+                        <a href="#darry" class="btn">View Profile</a>
+                    </div>
+                    
+                    <div class="family-card animate-on-scroll" onclick="navigateToPage('anna-sophia')">
+                        <h3>Anna-Sophia Dinov</h3>
+                        <p>Discover Anna-Sophia's passions, achievements, and story.</p>
+                        <a href="#anna-sophia" class="btn">View Profile</a>
+                    </div>
+                    
+                    <div class="family-card animate-on-scroll" onclick="navigateToPage('kosta')">
+                        <h3>Kosta Dinov</h3>
+                        <p>Explore Kosta's interests, projects, and experiences.</p>
+                        <a href="#kosta" class="btn">View Profile</a>
+                    </div>
+                    
+                    <div class="family-card animate-on-scroll" onclick="navigateToPage('ivo')">
+                        <h3>Ivo Dinov</h3>
+                        <p>Learn about Ivo's work, research, and contributions.</p>
+                        <a href="#ivo" class="btn">View Profile</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Darry's Page -->
+            <div id="darry" class="page">
+                <button class="btn back-btn" onclick="navigateToPage('home')">← Back to Home</button>
+                <div class="member-profile animate-on-scroll">
+                    <div class="member-header">
+                        <div class="member-avatar">D</div>
+                        <div class="member-info">
+                            <h2>Darry Dinov</h2>
+                            <div class="title">Family Member</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>About</h3>
+                        <p>Welcome to Darry's page. This section can be updated with personal information, achievements, and interests.</p>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>Interests & Hobbies</h3>
+                        <p>This section can include Darry's hobbies, interests, and personal projects.</p>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>Contact</h3>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="contact-icon">@</div>
+                                <div>
+                                    <strong>Email</strong><br>
+                                    <span>darry@example.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anna-Sophia's Page -->
+            <div id="anna-sophia" class="page">
+                <button class="btn back-btn" onclick="navigateToPage('home')">← Back to Home</button>
+                <div class="member-profile animate-on-scroll">
+                    <div class="member-header">
+                        <div class="member-avatar">AS</div>
+                        <div class="member-info">
+                            <h2>Anna-Sophia Dinov</h2>
+                            <div class="title">Family Member</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>About</h3>
+                        <p>Welcome to Anna-Sophia's page. This section can be updated with personal information, achievements, and interests.</p>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>Interests & Hobbies</h3>
+                        <p>This section can include Anna-Sophia's hobbies, interests, and personal projects.</p>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>Contact</h3>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="contact-icon">@</div>
+                                <div>
+                                    <strong>Email</strong><br>
+                                    <span>anna-sophia@example.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kosta's Page -->
+            <div id="kosta" class="page">
+                <button class="btn back-btn" onclick="navigateToPage('home')">← Back to Home</button>
+                <div class="member-profile animate-on-scroll">
+                    <div class="member-header">
+                        <div class="member-avatar">K</div>
+                        <div class="member-info">
+                            <h2>Kosta Dinov</h2>
+                            <div class="title">Family Member</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>About</h3>
+                        <p>Welcome to Kosta's page. This section can be updated with personal information, achievements, and interests.</p>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>Interests & Hobbies</h3>
+                        <p>This section can include Kosta's hobbies, interests, and personal projects.</p>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>Contact</h3>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="contact-icon">@</div>
+                                <div>
+                                    <strong>Email</strong><br>
+                                    <span>kosta@example.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ivo's Page -->
+            <div id="ivo" class="page">
+                <button class="btn back-btn" onclick="navigateToPage('home')">← Back to Home</button>
+                <div class="member-profile animate-on-scroll">
+                    <div class="member-header">
+                        <div class="member-avatar">I</div>
+                        <div class="member-info">
+                            <h2>Ivo Dinov</h2>
+                            <div class="title">Family Member</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>About</h3>
+                        <p>Welcome to Ivo's page. This section can be updated with personal information, achievements, and interests.</p>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>Professional Background</h3>
+                        <p>This section can include Ivo's professional work, research, and contributions.</p>
+                    </div>
+                    
+                    <div class="member-section">
+                        <h3>Contact</h3>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="contact-icon">@</div>
+                                <div>
+                                    <strong>Email</strong><br>
+                                    <span>ivo@example.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Page -->
+            <div id="contact" class="page">
+                <button class="btn back-btn" onclick="navigateToPage('home')">← Back to Home</button>
+                <div class="member-profile animate-on-scroll">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">Contact the Dinov Family</h2>
+                    
+                    <div class="member-section">
+                        <h3>Get in Touch</h3>
+                        <p>We'd love to hear from you! Reach out to any family member directly or use the general contact information below.</p>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div>
+                                <strong>General Inquiries</strong><br>
+                                <span>family@dinov.org</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">🌐</div>
+                            <div>
+                                <strong>Website</strong><br>
+                                <span>www.dinov.org</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div>
+                                <strong>Location</strong><br>
+                                <span>Los Angeles, CA</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">🔗</div>
+                            <div>
+                                <strong>GitHub</strong><br>
+                                <span>github.com/dinov-family</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 The Dinov Family. All rights reserved.</p>
+            <p>Hosted with ❤️ on GitHub Pages</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        function navigateToPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update navigation links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            const activeLink = document.querySelector(`a[href="#${pageId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Update URL hash
+            history.pushState(null, null, `#${pageId}`);
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Handle navigation clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.nav-link') || e.target.matches('.btn[href]')) {
+                e.preventDefault();
+                const href = e.target.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    const pageId = href.substring(1);
+                    navigateToPage(pageId);
+                }
+            }
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash.substring(1) || 'home';
+            navigateToPage(hash);
+        });
+
+        // Initialize page based on URL hash
+        document.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1) || 'home';
+            navigateToPage(hash);
+            
+            // Animate elements on scroll
+            observeElements();
+        });
+
+        // Scroll animation
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Smooth navbar behavior on scroll
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    </script>
+</body>
+</html>
