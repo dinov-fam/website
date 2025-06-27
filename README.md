@@ -3,8 +3,8 @@
 ## Adding Family Member Content
 
 Find the member's section in the HTML (search for their name)
-Update the content within the <div class="member-section"> blocks
-Add photos by replacing the avatar div with an <img> tag
+Update the content within the \<div class="member-section"\> blocks
+Add photos by replacing the avatar div with an \<img\> tag
 Update contact information in the respective sections
 
 ## Adding New Family Members
